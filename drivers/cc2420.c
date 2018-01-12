@@ -51,7 +51,7 @@
  * @}
  */
 
-#include <io.h>
+#include <msp430.h>
 #include <signal.h>
 
 #include "spi1.h"
@@ -222,7 +222,8 @@ void port1irq(void);
  * Used for handling CC2420 interrupts triggered on
  * the IO pins.
  */
-interrupt(PORT1_VECTOR) port1irq(void) {
+void port1irq(void);
+__attribute__ ((interrupt (PORT1_VECTOR))) void port1irq(void) {
 	if (P1IFG & FIFO_PIN) {
 		FIFO_INT_CLEAR();
 		if (fifo_cb != 0x0) {

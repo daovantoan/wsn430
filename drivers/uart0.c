@@ -52,7 +52,7 @@
  */
 
 
-#include <io.h>
+#include <msp430.h>
 #include <signal.h>
 #include "uart0.h"
 
@@ -97,7 +97,7 @@ static uart0_cb_t rx_char_cb;
 static uart0_dma_cb_t dma_cb;
 static volatile int16_t uart_tx_busy;
 
-critical void uart0_init(uint16_t config){
+__attribute__ ((critical)) void uart0_init(uint16_t config){
 
   P3SEL |= (0x10 | 0x20);
 
@@ -166,7 +166,7 @@ int uart0_getchar_polling(void)
   return c;
 }
 
-critical int uart0_putchar(int c)
+__attribute__ ((critical)) int uart0_putchar(int c)
 {
   // wait until tx not busy
   while (uart_tx_busy) ;
@@ -177,7 +177,7 @@ critical int uart0_putchar(int c)
   return c;
 }
 
-critical void uart0_stop(void)
+__attribute__ ((critical)) void uart0_stop(void)
 {
   // wait until tx not busy
   while (uart_tx_busy) ;
@@ -195,7 +195,7 @@ void usart0irq(void);
 /**
  * \brief the interrupt function
  */
-interrupt(USART0RX_VECTOR) usart0irq(void) {
+__attribute__ ((interrupt (USART0RX_VECTOR))) void usart0irq(void) {
     uint8_t dummy;
 
     /* Check status register for receive errors. */
@@ -237,7 +237,7 @@ int uart0_dma_putchars(uint8_t* data, int16_t length) {
     // configure source address: user's buffer
     DMA0SA = (uint16_t)(data+1);
     // configure destination address: UART TX BUF
-    DMA0DA = U0TXBUF_;
+    DMA0DA = U0TXBUF;
     // configure length
     DMA0SZ = length-1;
 
@@ -255,7 +255,7 @@ void uart0_register_dma_callback(uart0_dma_cb_t cb) {
 }
 
 void dmairq(void);
-interrupt(DACDMA_VECTOR) dmairq(void) {
+__attribute__ ((interrupt (DACDMA_VECTOR))) void dmairq(void) {
     if (DMA0CTL&DMAIFG) {
         DMA0CTL = 0;
         uart_tx_busy = 0;

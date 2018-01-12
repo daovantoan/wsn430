@@ -34,8 +34,9 @@
  */
 
 
-#include <io.h>
+#include <msp430.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "leds.h"
 #include "clock.h"
@@ -54,8 +55,8 @@ static void delay(unsigned int d)
     {
       for (i = 0; i<d; i++)
 	{
-	  nop();
-	  nop();
+	  _no_operation();
+	  _no_operation();
 	}
     }
 }
@@ -79,8 +80,16 @@ static void led_change( void )
   led_state = (led_state + 1) & 0x3;
 }
 
-int putchar(int c) {
-  return uart0_putchar(c);
+int write(int file, char *ptr, int len);
+int write(int file, char *ptr, int len)
+{
+    int i;
+    file = file;
+    for (i = 0; i < len; i++)
+    {
+        uart0_putchar(*ptr++);
+    }
+    return len;
 }
 
 /**********************

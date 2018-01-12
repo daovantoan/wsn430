@@ -50,7 +50,8 @@
  * @}
  */
 
-#include <io.h>
+#include <msp430.h>
+#include <stdint.h>
 #include "ds1722.h"
 #include "spi1.h"
 
@@ -82,7 +83,7 @@ static void inline micro_wait(register uint16_t n)
 
 static uint8_t resolution = 0x2;
 
-critical void ds1722_init(void)
+__attribute__ ((critical)) void ds1722_init(void)
 {
     spi1_init();
 }
@@ -100,7 +101,7 @@ void ds1722_set_res(uint16_t res)
   }
 }
 
-critical void ds1722_sample_1shot(void)
+__attribute__ ((critical)) void ds1722_sample_1shot(void)
 {
   uint8_t reg;
   reg = CONF_MASK | CONF_1SHOT | (resolution&CONF_RES_MASK) | CONF_SD;
@@ -108,7 +109,7 @@ critical void ds1722_sample_1shot(void)
   ds1722_write_cfg(reg);
 }
 
-critical void ds1722_sample_cont(void)
+__attribute__ ((critical)) void ds1722_sample_cont(void)
 {
   uint8_t reg;
   reg = CONF_MASK | (resolution&CONF_RES_MASK);
@@ -116,7 +117,7 @@ critical void ds1722_sample_cont(void)
   ds1722_write_cfg(reg);
 }
 
-critical void ds1722_stop(void)
+__attribute__ ((critical)) void ds1722_stop(void)
 {
   uint8_t reg;
   reg = CONF_MASK | (resolution&CONF_RES_MASK) | CONF_SD;
@@ -125,7 +126,7 @@ critical void ds1722_stop(void)
   ds1722_write_cfg(reg);
 }
 
-critical uint8_t ds1722_read_MSB(void)
+__attribute__ ((critical)) uint8_t ds1722_read_MSB(void)
 {
   uint8_t temp;
 
@@ -137,7 +138,7 @@ critical uint8_t ds1722_read_MSB(void)
   return temp;
 }
 
-critical uint8_t ds1722_read_LSB(void)
+__attribute__ ((critical)) uint8_t ds1722_read_LSB(void)
 {
   uint8_t temp;
 
@@ -150,7 +151,7 @@ critical uint8_t ds1722_read_LSB(void)
 }
 
 
-critical uint8_t ds1722_read_cfg(void)
+__attribute__ ((critical)) uint8_t ds1722_read_cfg(void)
 {
   uint8_t temp;
 
@@ -162,7 +163,7 @@ critical uint8_t ds1722_read_cfg(void)
   return temp;
 }
 
-critical void ds1722_write_cfg(uint8_t c)
+__attribute__ ((critical)) void ds1722_write_cfg(uint8_t c)
 {
   spi1_select(SPI1_DS1722);
   spi1_write_single(REG_CONF | WRITE_REG);

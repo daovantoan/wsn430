@@ -47,7 +47,7 @@
  * \date   November 08
  **/
 
-#include <io.h>
+#include <msp430.h>
 #include <signal.h>
 #include "timerB.h"
 
@@ -209,7 +209,7 @@ void timerB_stop()
     TBCTL &= ~(MC0|MC1);
 }
 void timerB0irq( void );
-interrupt (TIMERB0_VECTOR) timerB0irq( void )
+__attribute__ ((interrupt (TIMERB0_VECTOR))) void timerB0irq( void )
 {
     if (timerB_periods[0])
     {
@@ -231,7 +231,7 @@ interrupt (TIMERB0_VECTOR) timerB0irq( void )
 }
 
 void timerB1irq( void );
-interrupt (TIMERB1_VECTOR) timerB1irq( void )
+__attribute__ ((interrupt (TIMERB1_VECTOR))) void timerB1irq( void )
 {
     uint16_t alarm;
 

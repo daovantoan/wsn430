@@ -45,7 +45,7 @@
  * \author Christophe Braillon <christophe.braillon@inria.fr>
  * \date April 08
  */
-#include <io.h>
+#include <msp430.h>
 #include <signal.h>
 #include "leds.h"
 #include "timerA.h"
@@ -97,7 +97,8 @@ int main(void)
 	set_mcu_speed_xt2_mclk_8MHz_smclk_1MHz();
 
 	// Enable interrupts
-	eint();
+	_no_operation();
+	__enable_interrupt();
 
 	// Swtich of LEDs
 	LEDS_INIT();

@@ -34,7 +34,7 @@
  */
 
 
-#include <io.h>
+#include <msp430.h>
 #include <signal.h>
 #include <stdio.h>
 
@@ -46,10 +46,16 @@
 
 static uint16_t sfd_cb(void);
 
-int putchar(int c)
+int write(int file, char *ptr, int len);
+int write(int file, char *ptr, int len)
 {
-    uart0_putchar((char) c);
-    return c;
+    int i;
+    file = file;
+    for (i = 0; i < len; i++)
+    {
+        uart0_putchar(*ptr++);
+    }
+    return len;
 }
 
 uint8_t rxframe[128];
@@ -71,7 +77,8 @@ int main( void )
     set_mcu_speed_xt2_mclk_8MHz_smclk_1MHz();
 
     /* Enable Interrupts */
-    eint();
+	_no_operation();
+	__enable_interrupt();
 
     LEDS_INIT();
     LEDS_ON();

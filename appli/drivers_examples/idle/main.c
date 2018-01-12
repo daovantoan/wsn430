@@ -41,7 +41,7 @@
  */
 
 
-#include <io.h>
+#include <msp430.h>
 int main(void)
 {
 	// Stop the watchdog timer.

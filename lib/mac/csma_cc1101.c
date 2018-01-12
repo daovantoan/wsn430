@@ -48,7 +48,7 @@
  * can occur.
  */
 
-#include <io.h>
+#include <msp430.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -218,7 +218,7 @@ void mac_set_error_cb(mac_error_t cb) {
     error_cb = cb;
 }
 
-critical uint16_t mac_send(uint8_t packet[], uint16_t length, uint16_t dst_addr) {
+__attribute__ ((critical)) uint16_t mac_send(uint8_t packet[], uint16_t length, uint16_t dst_addr) {
     // check length
     if (length>PACKET_LENGTH_MAX) {
         PRINTF("mac_send length error\n");
@@ -248,7 +248,7 @@ critical uint16_t mac_send(uint8_t packet[], uint16_t length, uint16_t dst_addr)
     return 0;
 }
 
-critical void mac_stop(void) {
+__attribute__ ((critical)) void mac_stop(void) {
     cc1101_cmd_idle();
     cc1101_gdo0_int_disable();
     cc1101_gdo2_int_disable();
@@ -256,7 +256,7 @@ critical void mac_stop(void) {
 
     timerB_stop();
 }
-critical void mac_restart(void) {
+__attribute__ ((critical)) void mac_restart(void) {
     rx_set();
 }
 

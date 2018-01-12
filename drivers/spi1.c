@@ -57,7 +57,8 @@
  * @}
  */
 
-#include <io.h>
+#include <msp430.h>
+#include <stdint.h>
 #include "spi1.h"
 
 /* Local Macros */

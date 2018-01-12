@@ -34,7 +34,7 @@
  */
 
 
-#include <io.h>
+#include <msp430.h>
 
 #include "leds.h"
 
@@ -51,8 +51,8 @@ static void delay(unsigned int d)
     {
       for (i = 0; i<d; i++)
 	{
-	  nop();
-	  nop();
+	  _no_operation();
+	  _no_operation();
 	}
     }
 }

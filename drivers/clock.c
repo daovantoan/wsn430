@@ -49,7 +49,7 @@
  * @}
  */
 
-#include <io.h>
+#include <msp430.h>
 #include <signal.h>
 #include <iomacros.h>
 #include <stdio.h>
@@ -67,7 +67,7 @@ do {                                                                   \
   do {                                                                 \
     IFG1 &= ~OFIFG;                  /* Clear OSCFault flag  */        \
     for (i = 0xff; i > 0; i--)       /* Time for flag to set */        \
-       nop();                        /*                      */        \
+       _no_operation();              /*                      */        \
   }  while ((IFG1 & OFIFG) != 0);    /* OSCFault flag still set? */    \
 } while (0)
 

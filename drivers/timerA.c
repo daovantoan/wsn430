@@ -46,7 +46,7 @@
  * \date   November 08
  **/
 
-#include <io.h>
+#include <msp430.h>
 #include <signal.h>
 #include "timerA.h"
 
@@ -181,7 +181,7 @@ void timerA_stop()
 }
 
 void timerA0irq(void);
-interrupt (TIMERA0_VECTOR) timerA0irq( void )
+__attribute__ ((interrupt (TIMERA0_VECTOR))) void timerA0irq( void )
 {
     if (timerA_periods[0])
     {
@@ -203,7 +203,7 @@ interrupt (TIMERA0_VECTOR) timerA0irq( void )
 }
 
 void timerA1irq(void);
-interrupt (TIMERA1_VECTOR) timerA1irq( void )
+__attribute__ ((interrupt (TIMERA1_VECTOR))) void timerA1irq( void )
 {
     uint16_t alarm;
 

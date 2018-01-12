@@ -58,7 +58,8 @@
  */
 
 
-#include <io.h>
+#include <msp430.h>
+#include <stdint.h>
 #include "i2c0.h"
 
 #define  setMasterMode()            U0CTL |= MST

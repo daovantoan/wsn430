@@ -34,7 +34,7 @@
  */
 
 
-#include <io.h>
+#include <msp430.h>
 #include <stdio.h>
 
 #include "leds.h"
@@ -42,10 +42,16 @@
 #include "uart0.h"
 #include "ds2411.h"
 
-/* Define putchar for printf */
-int putchar (int c)
+int write(int file, char *ptr, int len);
+int write(int file, char *ptr, int len)
 {
-	return uart0_putchar(c);
+    int i;
+    file = file;
+    for (i = 0; i < len; i++)
+    {
+        uart0_putchar(*ptr++);
+    }
+    return len;
 }
 
 

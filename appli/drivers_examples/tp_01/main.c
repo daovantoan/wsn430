@@ -1,6 +1,6 @@
 
 
-#include <io.h>
+#include <msp430.h>
 #include <signal.h>
 #include <stdio.h>
 
@@ -21,10 +21,16 @@ uint16_t char_rx(uint8_t c);
 // timer alarm function
 uint16_t alarm(void);
 
-// printf's putchar
-int16_t putchar(int16_t c)
+int write(int file, char *ptr, int len);
+int write(int file, char *ptr, int len)
 {
-	return uart0_putchar(c);
+    int i;
+    file = file;
+    for (i = 0; i < len; i++)
+    {
+        uart0_putchar(*ptr++);
+    }
+    return len;
 }
 
 /* Global variables */
@@ -71,7 +77,8 @@ int main( void )
 
 
 	// Enable Interrupts
-	eint();
+	_no_operation();
+	__enable_interrupt();
 
 	// Print information
 	printf("Type command\n");

@@ -50,8 +50,8 @@
  * @}
  */
 
-#include <io.h>
-
+#include <msp430.h>
+#include <stdint.h>
 #include "ds2411.h"
 
 /**
@@ -338,7 +338,7 @@ static uint8_t ds2411_read_byte(void) // >= 560us
 /***************************************************/
 /***************************************************/
 
-critical uint16_t ds2411_init(void)
+__attribute__ ((critical)) uint16_t ds2411_init(void)
 {
   uint16_t retry = 5;
 

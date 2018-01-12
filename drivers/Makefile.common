@@ -23,21 +23,30 @@ $(error Required INCLUDES variable is undefined in Makefile.\
   If there is no include needed, define it empty)
 endif # INCLUDES
 
+#COMMAND:=$(shell type -p foo || echo bar)
+GCCPREFIX ?= msp430-
+ifeq ($(shell which $(GCCPREFIX)gcc; echo $$?),1)
+    GCCPREFIX = msp430-elf-
+ifeq ($(shell which $(GCCPREFIX)gcc; echo $$?),1)
+    $(error No MSP430 compiler found.\
+      Make sure msp430-gcc or msp430-elf-gcc are in your PATH)
+endif
+endif
 
-CC      = msp430-gcc
-OBJCOPY = msp430-objcopy
+CC      = $(GCCPREFIX)gcc
+OBJCOPY = $(GCCPREFIX)objcopy
 RM      = -rm -f
 
 DEBUG   ?= -g
 OPT     ?= -Os
 
-CPU     ?= -mmcu=msp430x1611
+CPU     ?= -mmcu=msp430f1611
 
 WARNINGS += -Wall -Wpointer-arith -Wbad-function-cast
 WARNINGS += -Wcast-align -Wsign-compare -Waggregate-return -Wmissing-prototypes
 WARNINGS += -Wmissing-declarations -Wunused
 
-
+INCLUDES += -I /opt/msp430/include
 
 
 # GCC Uniarch compatibility

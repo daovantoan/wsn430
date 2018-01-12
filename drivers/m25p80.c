@@ -51,7 +51,7 @@
  * @}
  */
 
-#include <io.h>
+#include <msp430.h>
 #include <signal.h>
 
 #include "m25p80.h"
@@ -126,7 +126,7 @@ typedef struct m25p80_sr m25p80_sr_t;
 /* ************************************************** */
 /* ************************************************** */
 
-critical uint8_t m25p80_init()
+__attribute__ ((critical)) uint8_t m25p80_init()
 {
   // Configure as GPIO outputs(CSn,Hold)
   P4DIR  |=  (M25P80_BIT_HOLD);
@@ -148,7 +148,7 @@ critical uint8_t m25p80_init()
 /* ************************************************** */
 /* ************************************************** */
 
-critical uint8_t m25p80_get_signature()
+__attribute__ ((critical)) uint8_t m25p80_get_signature()
 {
   uint8_t ret = 0;
   spi1_select(SPI1_M25P80);
@@ -172,7 +172,7 @@ critical uint8_t m25p80_get_signature()
  * other information is data or command
  */
 
-critical uint8_t m25p80_get_state()
+__attribute__ ((critical)) uint8_t m25p80_get_state()
 {
   uint8_t ret = 0;
   spi1_select(SPI1_M25P80);
@@ -188,7 +188,7 @@ critical uint8_t m25p80_get_state()
 /* ************************************************** */
 /* ************************************************** */
 
-critical void m25p80_wakeup(void)
+__attribute__ ((critical)) void m25p80_wakeup(void)
 {
   spi1_select(SPI1_M25P80);
   spi1_write_single(OPCODE_RES);
@@ -199,7 +199,7 @@ critical void m25p80_wakeup(void)
 /* ************************************************** */
 /* ************************************************** */
 
-critical void m25p80_power_down(void)
+__attribute__ ((critical)) void m25p80_power_down(void)
 {
   spi1_select(SPI1_M25P80);
   spi1_write_single(OPCODE_DP);
@@ -245,7 +245,7 @@ static void m25p80_write_enable()
 /* ************************************************** */
 /* ************************************************** */
 
-critical void m25p80_erase_sector(uint8_t ix)
+__attribute__ ((critical)) void m25p80_erase_sector(uint8_t ix)
 {
   m25p80_block_wip();
   m25p80_write_enable();
@@ -263,7 +263,7 @@ critical void m25p80_erase_sector(uint8_t ix)
 /* ************************************************** */
 /* ************************************************** */
 
-critical void m25p80_erase_bulk()
+__attribute__ ((critical)) void m25p80_erase_bulk()
 {
   m25p80_block_wip();
 
@@ -280,7 +280,7 @@ critical void m25p80_erase_bulk()
 /* ************************************************** */
 /* ************************************************** */
 
-critical void m25p80_write(uint32_t addr, uint8_t *buffer, uint16_t size)
+__attribute__ ((critical)) void m25p80_write(uint32_t addr, uint8_t *buffer, uint16_t size)
 {
 
     uint8_t *p = buffer, *_end;
@@ -321,7 +321,7 @@ critical void m25p80_write(uint32_t addr, uint8_t *buffer, uint16_t size)
 /* ************************************************** */
 
 
-critical void m25p80_read(uint32_t addr, uint8_t *buffer, uint16_t size)
+__attribute__ ((critical)) void m25p80_read(uint32_t addr, uint8_t *buffer, uint16_t size)
 {
   m25p80_block_wip();
   spi1_select(SPI1_M25P80);

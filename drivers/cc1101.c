@@ -52,7 +52,7 @@
  * @}
  */
 
-#include <io.h>
+#include <msp430.h>
 #include <signal.h>
 
 #include "spi1.h"
@@ -78,7 +78,7 @@ void cc1101_reinit(void)
     spi1_init();
 }
 
-critical void cc1101_init(void)
+__attribute__ ((critical)) void cc1101_init(void)
 {
   gdo0_cb = 0x0;
   gdo2_cb = 0x0;
@@ -107,7 +107,7 @@ critical void cc1101_init(void)
   cc1101_write_reg(CC1101_REG_DEVIATN, 0x0);
 }
 
-critical uint8_t cc1101_read_reg(uint8_t addr)
+__attribute__ ((critical)) uint8_t cc1101_read_reg(uint8_t addr)
 {
   uint8_t reg;
   spi1_select(SPI1_CC1101);
@@ -117,7 +117,7 @@ critical uint8_t cc1101_read_reg(uint8_t addr)
   return reg;
 }
 
-critical void cc1101_write_reg(uint8_t addr, uint8_t value)
+__attribute__ ((critical)) void cc1101_write_reg(uint8_t addr, uint8_t value)
 {
   spi1_select(SPI1_CC1101);
   spi1_write_single(addr | CC1101_ACCESS_WRITE);
@@ -125,7 +125,7 @@ critical void cc1101_write_reg(uint8_t addr, uint8_t value)
   spi1_deselect(SPI1_CC1101);
 }
 
-critical uint8_t cc1101_strobe_cmd(uint8_t cmd)
+__attribute__ ((critical)) uint8_t cc1101_strobe_cmd(uint8_t cmd)
 {
   uint8_t ret;
   spi1_select(SPI1_CC1101);
@@ -134,7 +134,7 @@ critical uint8_t cc1101_strobe_cmd(uint8_t cmd)
   return ret;
 }
 
-critical void cc1101_fifo_put(uint8_t* buffer, uint16_t length)
+__attribute__ ((critical)) void cc1101_fifo_put(uint8_t* buffer, uint16_t length)
 {
   spi1_select(SPI1_CC1101);
   spi1_write_single(CC1101_DATA_FIFO_ADDR | CC1101_ACCESS_WRITE_BURST);
@@ -142,7 +142,7 @@ critical void cc1101_fifo_put(uint8_t* buffer, uint16_t length)
   spi1_deselect(SPI1_CC1101);
 }
 
-critical void cc1101_fifo_get(uint8_t* buffer, uint16_t length)
+__attribute__ ((critical)) void cc1101_fifo_get(uint8_t* buffer, uint16_t length)
 {
   spi1_select(SPI1_CC1101);
   spi1_write_single(CC1101_DATA_FIFO_ADDR | CC1101_ACCESS_READ_BURST);
@@ -150,7 +150,7 @@ critical void cc1101_fifo_get(uint8_t* buffer, uint16_t length)
   spi1_deselect(SPI1_CC1101);
 }
 
-critical uint8_t cc1101_read_status(uint8_t addr)
+__attribute__ ((critical)) uint8_t cc1101_read_status(uint8_t addr)
 {
   return cc1101_read_reg(addr | CC1101_ACCESS_STATUS);
 }
@@ -207,7 +207,7 @@ void port1irq(void);
  * Used for handling CC1101 interrupts triggered on
  * the GDOx pins.
  */
-interrupt(PORT1_VECTOR) port1irq(void)
+__attribute__ ((interrupt (PORT1_VECTOR))) void port1irq(void)
 {
   if (P1IFG & GDO0_PIN)
   {

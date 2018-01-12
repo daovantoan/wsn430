@@ -41,18 +41,23 @@
 
 #include <stdio.h>
 #include <signal.h>
-#include <io.h>
+#include <msp430.h>
 #include "ADC.h"
 #include "leds.h"
 #include "uart0.h"
 #include "clock.h"
 
 // For printf
-int putchar(int c)
+int write(int file, char *ptr, int len);
+int write(int file, char *ptr, int len)
 {
-	uart0_putchar(c);
-
-	return 0;
+    int i;
+    file = file;
+    for (i = 0; i < len; i++)
+    {
+        uart0_putchar(*ptr++);
+    }
+    return len;
 }
 
 // ADC convertion callback
@@ -74,7 +79,7 @@ int main(void)
 	set_mcu_speed_xt2_mclk_8MHz_smclk_1MHz();
 
 	// Enables interrupts
-	eint();
+	__enable_interrupt();
 
 	// UART0 intialization (for printf in ADC callback)
 	uart0_init(UART0_CONFIG_1MHZ_115200);

@@ -50,7 +50,8 @@
  * @}
  */
 
-#include <io.h>
+#include <msp430.h>
+#include <stdint.h>
 #include "tsl2550.h"
 #include "i2c0.h"
 
@@ -70,7 +71,7 @@
  */
 
 
-critical void tsl2550_init(void)
+__attribute__ ((critical)) void tsl2550_init(void)
 {
     // configure TSL supply
     P4SEL &= ~(1<<5);
@@ -80,7 +81,7 @@ critical void tsl2550_init(void)
     i2c0_init();
 }
 
-critical uint8_t tsl2550_powerup(void)
+__attribute__ ((critical)) uint8_t tsl2550_powerup(void)
 {
     uint8_t readValue;
     i2c0_write_single(TSL_ADDR, TSL_CMD_PU);
@@ -88,22 +89,22 @@ critical uint8_t tsl2550_powerup(void)
     return readValue;
 }
 
-critical void tsl2550_powerdown(void)
+__attribute__ ((critical)) void tsl2550_powerdown(void)
 {
     i2c0_write_single(TSL_ADDR, TSL_CMD_PD);
 }
 
-critical void tsl2550_set_extended()
+__attribute__ ((critical)) void tsl2550_set_extended()
 {
     i2c0_write_single(TSL_ADDR, TSL_CMD_EXT);
 }
 
-critical void tsl2550_set_standard()
+__attribute__ ((critical)) void tsl2550_set_standard()
 {
     i2c0_write_single(TSL_ADDR, TSL_CMD_RST);
 }
 
-critical uint8_t tsl2550_read_adc0(void)
+__attribute__ ((critical)) uint8_t tsl2550_read_adc0(void)
 {
     uint8_t readValue;
     i2c0_write_single(TSL_ADDR, TSL_CMD_ADC0);
@@ -111,7 +112,7 @@ critical uint8_t tsl2550_read_adc0(void)
     return readValue;
 }
 
-critical uint8_t tsl2550_read_adc1(void)
+__attribute__ ((critical)) uint8_t tsl2550_read_adc1(void)
 {
     uint8_t readValue;
     i2c0_write_single(TSL_ADDR, TSL_CMD_ADC1);

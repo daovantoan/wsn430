@@ -40,7 +40,7 @@
  *  \date   May 09
  **/
 
-#include <io.h>
+#include <msp430.h>
 #include <signal.h>
 #include "ADC.h"
 #include "leds.h"
@@ -51,7 +51,7 @@ static ADC12cb ADC12_callbacks[16];
 
 void adc12irq(void);
 
-interrupt (ADC_VECTOR) adc12irq()
+__attribute__ ((interrupt (ADC12_VECTOR))) void adc12irq()
 {
 	uint16_t memory;
 	uint16_t value;
